@@ -3,15 +3,19 @@ package site.yl.json.token;
 public class RightBraceToken extends Token {
 
     public RightBraceToken(Coordinate coordinate){
-        this("}",coordinate);
+        super(coordinate);
     }
 
-    private RightBraceToken(String tokenValue,Coordinate coordinate) {
-        super(tokenValue,coordinate);
-    }
 
     @Override
     protected TokenType getType() {
         return TokenType.RIGHT_BRACE;
+    }
+
+    @Override
+    public String toString() {
+        return "RightBraceToken{" +
+                "tokenValue=" + "}" +
+                '}';
     }
 }

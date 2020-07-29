@@ -1,12 +1,25 @@
 package site.yl.json.token;
 
 public class BoolToken extends Token {
-    public BoolToken(String tokenValue, Coordinate coordinate) {
-        super(tokenValue, coordinate);
+    private boolean tokenValue;
+    public BoolToken(boolean tokenValue, Coordinate coordinate) {
+        super(coordinate);
+        this.tokenValue = tokenValue;
     }
 
     @Override
     protected TokenType getType() {
         return TokenType.BOOL;
+    }
+
+    public boolean getValue(){
+        return tokenValue;
+    }
+
+    @Override
+    public String toString() {
+        return "BoolToken{" +
+                "tokenValue=" + tokenValue +
+                '}';
     }
 }

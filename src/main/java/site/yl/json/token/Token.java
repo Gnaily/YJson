@@ -21,16 +21,14 @@ package site.yl.json.token;
 public abstract class Token {
 
     private Coordinate coordinate;
-    private String content;
-    public  Token (String content,Coordinate coordinate){
-        this.content=content;
-        this.coordinate=coordinate;
+
+    public  Token (Coordinate coordinate){
+        this.coordinate = coordinate;
     }
 
-    public String content(){
-        return content;
+    public Coordinate getCoordinate(){
+        return coordinate;
     }
-
 
    protected abstract TokenType getType();
 

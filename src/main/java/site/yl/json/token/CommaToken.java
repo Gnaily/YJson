@@ -3,11 +3,7 @@ package site.yl.json.token;
 public class CommaToken extends Token {
 
     public CommaToken(Coordinate coordinate){
-        this(",",coordinate);
-    }
-
-    private CommaToken(String tokenValue,Coordinate coordinate) {
-        super(tokenValue,coordinate);
+        super(coordinate);
     }
 
     @Override
@@ -15,4 +11,10 @@ public class CommaToken extends Token {
         return TokenType.COMMA;
     }
 
+    @Override
+    public String toString() {
+        return "CommaToken{" +
+                "tokenValue=" + ":" +
+                '}';
+    }
 }
