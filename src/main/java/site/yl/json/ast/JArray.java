@@ -1,25 +1,17 @@
 package site.yl.json.ast;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class JArray  implements JValue{
+public class JArray extends ArrayList<JValue> implements JValue{
 
-  private List<JValue> jValueList;
-
-  public JArray(){
-    this.jValueList = new ArrayList<>();
+  @Override
+  public JValueType getType() {
+    return JValueType.JArray;
   }
 
-  public JArray(List<JValue> jValueList){
-    this.jValueList = jValueList;
+  @Override
+  public boolean is(JValueType jValueType) {
+    return getType()==jValueType;
   }
 
-  public void add(JValue jValue){
-    jValueList.add(jValue);
-  }
-
-  public boolean isEmpty() {
-     return jValueList.isEmpty();
-  }
 }

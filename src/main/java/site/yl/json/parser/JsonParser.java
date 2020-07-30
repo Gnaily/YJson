@@ -52,8 +52,8 @@ public abstract class JsonParser {
   }
 
 
-  private static JValue parseArray(Lexer lexer) throws JsonParseException{
-    JArray jArray = new JArray();//{a:{},b:{}}
+  private static JArray parseArray(Lexer lexer) throws JsonParseException{
+    JArray jArray = new JArray();
     while (lexer.hasNext()){
       Token token = lexer.nextToken();
       if(token.match(TokenType.RIGHT_SQUARE)){
@@ -72,7 +72,7 @@ public abstract class JsonParser {
   }
 
 
-  private static JValue parseObject(Lexer lexer) throws JsonParseException{
+  private static JObject parseObject(Lexer lexer) throws JsonParseException{
     JObject jObject = new JObject();//{a:{},b:{}}
     while (lexer.hasNext()){
       Token token = lexer.nextToken();
@@ -82,13 +82,27 @@ public abstract class JsonParser {
         String key = matchKey(token);
         eat(TokenType.COLON, lexer,"missing symbol :");
         JValue  value = parse(lexer);// null , number ,string, bool,  object ,array
-
-        jObject.add(new JPair(key, value));
+        jObject.put(key, value);
       }
     }
     throw  new JsonParseException("parse fail at line " + lexer.getLine()+ " column " + lexer.getColumn()+","+"missing symbol }");
   }
 
+
+  private static JString parseString(StringToken token) {
+    return new JString(token.getValue());
+  }
+
+
+  private static JNumber parseNumber(NumberToken token) {
+
+    return new JNumber(new BigDecimal(token.getTokenValue()));
+  }
+
+
+  private static JBool parseBool(BoolToken token) {
+    return new JBool(Boolean.valueOf(token.getValue()));
+  }
 
   private static void eat(TokenType tokenType, Lexer lexer,String failMessage) throws JsonParseException{
     if (lexer.hasNext()) {
@@ -109,21 +123,4 @@ public abstract class JsonParser {
       throw  new JsonParseException("parse fail at line " + coo.getLine()+ " column " + coo.getColumn() + "," + token.toString());
     }
   }
-
-
-  private static JValue parseString(StringToken token) {
-    return new JString(token.getValue());
-  }
-
-
-  private static JValue parseNumber(NumberToken token) {
-
-    return new JNumber(new BigDecimal(token.getTokenValue()));
-  }
-
-
-  private static JValue parseBool(BoolToken token) {
-    return new JBool(Boolean.valueOf(token.getValue()));
-  }
-
 }

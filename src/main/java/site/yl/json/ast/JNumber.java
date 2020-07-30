@@ -4,7 +4,7 @@ import site.yl.json.util.TypeUtil;
 
 import java.math.BigDecimal;
 
-public class JNumber extends Number implements JValue {
+public final  class JNumber extends Number implements JValue {
 
     private Number number;
 
@@ -92,4 +92,15 @@ public class JNumber extends Number implements JValue {
             throw  new RuntimeException("error number" + number);
         }
     }
+
+    @Override
+    public JValueType getType() {
+        return JValueType.JNUMBER;
+    }
+
+    @Override
+    public boolean is(JValueType jValueType) {
+        return getType()==jValueType;
+    }
+
 }

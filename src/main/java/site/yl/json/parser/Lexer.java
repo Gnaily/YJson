@@ -104,7 +104,7 @@ public class Lexer {
             while ( (newCur = forward()) < textLen ){
                 char newCh = text.charAt(newCur);
                 if(newCh == '"' ){
-                    if('\\' == text.charAt(newCur-1)){
+                    if('\\' != text.charAt(newCur-1)){
                         return new StringToken(text.substring(cur, newCur+1), new Coordinate(line, col));
                     }
                 }

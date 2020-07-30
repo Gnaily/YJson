@@ -1,23 +1,17 @@
 package site.yl.json.ast;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 
-public class JObject implements JValue {
+public class JObject  extends LinkedHashMap<String,JValue> implements JValue {
 
-  private List<JPair> pairList;
+	@Override
+	public JValueType getType() {
+		return JValueType.JObject;
+	}
 
-  public JObject() {
-    this.pairList = new ArrayList<>();
-  }
-
-  public JObject(List<JPair> pairList) {
-    this.pairList = pairList;
-  }
-
-  public void add(JPair pair){
-    pairList.add(pair);
-  }
-
+	@Override
+	public boolean is(JValueType jValueType) {
+		return getType()==jValueType;
+	}
 
 }
