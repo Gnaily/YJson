@@ -3,6 +3,7 @@ package site.yl.json.ast;
 import site.yl.json.util.TypeUtil;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public final  class JNumber extends Number implements JValue {
 
@@ -103,4 +104,16 @@ public final  class JNumber extends Number implements JValue {
         return getType()==jValueType;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JNumber jNumber = (JNumber) o;
+        return Objects.equals(number, jNumber.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number);
+    }
 }

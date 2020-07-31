@@ -1,5 +1,7 @@
 package site.yl.json.ast;
 
+import java.util.Objects;
+
 public final class JBool implements JValue{
 
 	private boolean bool;
@@ -22,4 +24,16 @@ public final class JBool implements JValue{
 		return getType()==jValueType;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		JBool jBool = (JBool) o;
+		return bool == jBool.bool;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(bool);
+	}
 }

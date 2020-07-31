@@ -1,5 +1,7 @@
 package site.yl.json.ast;
 
+import java.util.Objects;
+
 public final  class JString  implements JValue{
 
   private String value;
@@ -22,4 +24,16 @@ public final  class JString  implements JValue{
     return getType()==jValueType;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    JString jString = (JString) o;
+    return Objects.equals(value, jString.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
 }
