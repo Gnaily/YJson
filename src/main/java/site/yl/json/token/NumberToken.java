@@ -12,7 +12,7 @@ public class NumberToken extends Token {
     }
 
     @Override
-    protected TokenType getType() {
+    public TokenType getType() {
         return TokenType.NUMBER;
     }
 

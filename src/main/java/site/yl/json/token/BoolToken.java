@@ -8,7 +8,7 @@ public class BoolToken extends Token {
     }
 
     @Override
-    protected TokenType getType() {
+    public TokenType getType() {
         return TokenType.BOOL;
     }
 

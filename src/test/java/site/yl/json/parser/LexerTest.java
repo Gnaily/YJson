@@ -4,10 +4,7 @@ package site.yl.json.parser;
 import junit.framework.Assert;
 import org.junit.Test;
 import site.yl.json.JsonParseException;
-import site.yl.json.token.BoolToken;
-import site.yl.json.token.NumberToken;
-import site.yl.json.token.Token;
-import site.yl.json.token.TokenType;
+import site.yl.json.token.*;
 import site.yl.json.util.TypeUtil;
 
 public class LexerTest  extends Assert {
@@ -26,7 +23,7 @@ public class LexerTest  extends Assert {
 
     assertTrue(token.toString(),token.match(TokenType.BOOL));
     BoolToken boolToken = TypeUtil.down(token);
-    assertTrue(boolToken.getValue() == true);
+    assertEquals(boolToken.getValue() , true);
   }
 
   @Test
@@ -35,16 +32,16 @@ public class LexerTest  extends Assert {
     Token token = new Lexer(text).nextToken();
     assertTrue(token.match(TokenType.BOOL));
     BoolToken boolToken = TypeUtil.down(token);
-    assertTrue(boolToken.getValue() == false);
+    assertEquals(boolToken.getValue() , false);
   }
 
   @Test
   public void t4() throws JsonParseException {
-    String  text = "-123333";
+    String  text = "-123333 ";
     Token token = new Lexer(text).nextToken();
     assertTrue(token.match(TokenType.NUMBER));
     NumberToken numberToken = TypeUtil.down(token);
-    assertTrue(text.equals(numberToken.getTokenValue()));
+    assertEquals(text.trim(), numberToken.getTokenValue());
   }
 
   @Test
@@ -53,7 +50,7 @@ public class LexerTest  extends Assert {
     Token token = new Lexer(text).nextToken();
     assertTrue(token.match(TokenType.NUMBER));
     NumberToken numberToken = TypeUtil.down(token);
-    assertTrue(text.equals(numberToken.getTokenValue()));
+    assertEquals(text, numberToken.getTokenValue());
   }
 
   @Test
@@ -62,7 +59,7 @@ public class LexerTest  extends Assert {
     Token token = new Lexer(text).nextToken();
     assertTrue(token.match(TokenType.NUMBER));
     NumberToken numberToken = TypeUtil.down(token);
-    assertTrue(text.equals(numberToken.getTokenValue()));
+    assertEquals(text, numberToken.getTokenValue());
   }
 
   @Test
@@ -71,7 +68,7 @@ public class LexerTest  extends Assert {
     Token token = new Lexer(text).nextToken();
     assertTrue(token.match(TokenType.NUMBER));
     NumberToken numberToken = TypeUtil.down(token);
-    assertTrue(text.equals(numberToken.getTokenValue()));
+    assertEquals(text, numberToken.getTokenValue());
   }
 
   @Test
@@ -80,7 +77,7 @@ public class LexerTest  extends Assert {
     Token token = new Lexer(text).nextToken();
     assertTrue(token.match(TokenType.NUMBER));
     NumberToken numberToken = TypeUtil.down(token);
-    assertTrue(text.equals(numberToken.getTokenValue()));
+    assertEquals(text, numberToken.getTokenValue());
   }
 
   @Test
@@ -89,17 +86,17 @@ public class LexerTest  extends Assert {
     Token token = new Lexer(text).nextToken();
     assertTrue(token.match(TokenType.NUMBER));
     NumberToken numberToken = TypeUtil.down(token);
-    assertTrue(text.equals(numberToken.getTokenValue()));
+    assertEquals(text, numberToken.getTokenValue());
   }
 
 
   @Test
   public void t10() throws JsonParseException {
-    String  text = "x778true";
+    String  text = "\"张三\"";
     Token token = new Lexer(text).nextToken();
     assertTrue(token.match(TokenType.STRING));
-    NumberToken numberToken = TypeUtil.down(token);
-    assertTrue(text.equals(numberToken.getTokenValue()));
+    StringToken stringToken = TypeUtil.down(token);
+    assertEquals(text, stringToken.getValue());
   }
 
 

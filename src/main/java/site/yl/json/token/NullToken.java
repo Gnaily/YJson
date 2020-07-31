@@ -7,7 +7,7 @@ public class NullToken extends Token{
     }
 
     @Override
-    protected TokenType getType() {
+    public TokenType getType() {
         return TokenType.NULL;
     }
 

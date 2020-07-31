@@ -7,7 +7,7 @@ public class RightSquareToken extends Token {
     }
 
     @Override
-    protected TokenType getType() {
+    public TokenType getType() {
         return TokenType.RIGHT_SQUARE;
     }
 

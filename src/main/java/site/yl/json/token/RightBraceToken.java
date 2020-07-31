@@ -8,7 +8,7 @@ public class RightBraceToken extends Token {
 
 
     @Override
-    protected TokenType getType() {
+    public TokenType getType() {
         return TokenType.RIGHT_BRACE;
     }
 

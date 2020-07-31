@@ -8,7 +8,7 @@ public class ColonToken extends Token {
 
 
     @Override
-    protected TokenType getType() {
+    public TokenType getType() {
         return TokenType.COLON;
     }
 

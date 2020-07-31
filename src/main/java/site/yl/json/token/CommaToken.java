@@ -7,14 +7,14 @@ public class CommaToken extends Token {
     }
 
     @Override
-    protected TokenType getType() {
+    public TokenType getType() {
         return TokenType.COMMA;
     }
 
     @Override
     public String toString() {
         return "CommaToken{" +
-                "tokenValue=" + ":" +
+                "tokenValue=" + "," +
                 '}';
     }
 }

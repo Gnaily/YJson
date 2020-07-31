@@ -30,7 +30,7 @@ public abstract class Token {
         return coordinate;
     }
 
-   protected abstract TokenType getType();
+   public abstract TokenType getType();
 
    public boolean match(TokenType tokenType){
        return getType() == tokenType;

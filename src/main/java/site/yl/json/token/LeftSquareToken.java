@@ -8,7 +8,7 @@ public class LeftSquareToken extends Token{
 
 
     @Override
-    protected TokenType getType() {
+    public TokenType getType() {
         return TokenType.LEFT_SQUARE;
     }
 
