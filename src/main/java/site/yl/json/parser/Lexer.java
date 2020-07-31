@@ -4,6 +4,10 @@ package site.yl.json.parser;
 import site.yl.json.JsonParseException;
 import site.yl.json.token.*;
 
+/***
+ * @See http://www.json.org.cn/standard.htm
+ */
+
 public class Lexer {
 
     private int line;
@@ -11,21 +15,21 @@ public class Lexer {
     private  int cursor;
     private String text;
     private final  int textLen;
-
+    private final  int endPosition;
 
     public  Lexer(String text){
         this.text = text;
         this.textLen = text.length();
-
+        this.endPosition = textLen - 1;
         this.line = 1;
-        this.col = 1;
-        this.cursor = 0;
+        this.col = 0;
+        this.cursor = -1;
+        skipWhiteSpace();
     }
 
 
     public boolean hasNext(){
-        skip();
-        return cursor() < textLen;
+        return cursor() < endPosition;
     }
 
 
@@ -38,16 +42,22 @@ public class Lexer {
         int col = this.col;
         // delimiter
         if(ch == '{'){
+            skipWhiteSpace();
             return  new LeftBraceToken(new Coordinate(line, col));
         } else if(ch == '}') {
+            skipWhiteSpace();
             return  new RightBraceToken(new Coordinate(line, col));
         } else if(ch == '[') {
+            skipWhiteSpace();
             return  new LeftSquareToken(new Coordinate(line, col));
         } else if(ch == ']') {
+            skipWhiteSpace();
             return  new RightSquareToken(new Coordinate(line, col));
         } else if(ch == ',') {
+            skipWhiteSpace();
             return  new CommaToken(new Coordinate(line, col));
         } else if(ch == ':') {
+            skipWhiteSpace();
             return  new ColonToken(new Coordinate(line, col));
         }
         //null
@@ -56,6 +66,7 @@ public class Lexer {
                 String nullStr = text.substring(cur+1, cur+4);
                 if("ull".equals(nullStr) ){
                     forward(3);
+                    skipWhiteSpace();
                     return new NullToken(new Coordinate(line, col));
                 }
             }
@@ -67,15 +78,17 @@ public class Lexer {
                 String trueStr = text.substring(cur+1, cur+4);
                 if("rue".equals(trueStr) ){
                     forward(3);
+                    skipWhiteSpace();
                     return new BoolToken(true, new Coordinate(line, col));
                 }
             }
             throw  new JsonParseException(parseFailMessage(line, col));
         }else if( ch == 'f'){
-            if (cur+3 < textLen){
-                String falseStr = text.substring(cur+1, cur+4);
+            if (cur+4 < textLen){
+                String falseStr = text.substring(cur+1, cur+5);
                 if("alse".equals(falseStr) ){
-                    forward(3);
+                    forward(4);
+                    skipWhiteSpace();
                     return new BoolToken(false, new Coordinate(line, col));
                 }
             }
@@ -105,7 +118,8 @@ public class Lexer {
                 char newCh = text.charAt(newCur);
                 if(newCh == '"' ){
                     if('\\' != text.charAt(newCur-1)){
-                        return new StringToken(text.substring(cur, newCur+1), new Coordinate(line, col));
+                        skipWhiteSpace();
+                        return new StringToken(text.substring(cur+1, newCur), new Coordinate(line, col));
                     }
                 }
             }
@@ -117,13 +131,10 @@ public class Lexer {
     }
 
 
-    public int getLine() {
-        return line;
+    public Coordinate getCoordinate() {
+        return new Coordinate(line, col);
     }
 
-    public int getColumn() {
-        return col;
-    }
 
     private NumberToken parseNumberToken(boolean neg, int cur, int line, int col) throws JsonParseException {
         char newCh;
@@ -133,7 +144,6 @@ public class Lexer {
         int floatLen = 0;
         while ( (newCur = forward()) < textLen ){
             newCh = text.charAt(newCur);
-
             if( isNumber(newCh) ){
                 if(haveDot){
                     floatLen = floatLen + 1;
@@ -147,7 +157,10 @@ public class Lexer {
                     throw  new JsonParseException(parseFailMessage(line, col));
                 }
             }else if( ' ' == newCh || '\r' == newCh || '\n' == newCh || '\t' == newCh){
-                return new NumberToken(text.substring(cur, newCur+1), intLen, floatLen, new Coordinate(line, col));
+                skipWhiteSpace();
+                return new NumberToken(text.substring(cur, newCur), intLen, floatLen, new Coordinate(line, col));
+            }else if( ',' == newCh ||  '}' == newCh || ']' == newCh  ){
+                return new NumberToken(text.substring(cur, newCur), intLen, floatLen, new Coordinate(line, col));
             }else {
                 throw  new JsonParseException(parseFailMessage(line, col));
             }
@@ -173,26 +186,32 @@ public class Lexer {
     }
 
 
-    private void skip() {
-        int last = textLen - 1 ;
-        while (cursor() < last){
-            char ch;
-            while ( (ch = text.charAt(forward())) == ' '){
-                ;
-            }
-
-            if(ch == '\n'){
-                newLineStart();
-            }else {
-                return;
-            }
+    private boolean isBlank(char ch){
+        if(ch == ' ' || ch == '\t' || ch == '\r'){
+            return true;
+        }else {
+            return false;
         }
     }
 
+    /**
+     * skip white space
+     * @return  when skip to the end of text, return true
+     */
 
-    private void newLineStart() {
-        line = line + 1;
-        col = 1;
+    private boolean skipWhiteSpace() {
+        while (cursor() < endPosition){
+            char ch;
+
+            if(isBlank(ch = text.charAt(forward()))){
+                ;
+            }else if(ch == '\n'){
+                startNewLine();
+            }else {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -207,6 +226,11 @@ public class Lexer {
         return cursor;
     }
 
+
+    private void startNewLine() {
+        line = line + 1;
+        col = 1;
+    }
 
     private int cursor(){
         return cursor;
