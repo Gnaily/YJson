@@ -47,7 +47,7 @@
 
         <plugins>
 
-            <!-- maven编译插件 -->
+            <!-- maven compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -57,7 +57,7 @@
                 </configuration>
             </plugin>
 
-            <!-- javadoc文档插件 -->
+            <!-- maven javadoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
