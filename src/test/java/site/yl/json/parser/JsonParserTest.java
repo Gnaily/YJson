@@ -1,7 +1,7 @@
 package site.yl.json.parser;
 
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 import site.yl.json.JsonParseException;
 import site.yl.json.ast.*;
