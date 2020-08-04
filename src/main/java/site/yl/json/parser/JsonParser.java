@@ -69,11 +69,11 @@ public abstract class JsonParser {
           return jArray;
 
         case LEFT_BRACE:
-          value = parseArray(lexer);
+          value = parseObject(lexer);
           break;
 
         case LEFT_SQUARE:
-          value = parseObject(lexer);
+          value = parseArray(lexer);
           break;
 
         case NULL:

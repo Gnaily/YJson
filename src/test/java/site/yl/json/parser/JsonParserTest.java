@@ -77,4 +77,40 @@ public class JsonParserTest  extends Assert {
 		JNumber n = TypeUtil.down(o.get("key01"));
 		assertEquals(n.intValue() ,9999);
 	}
+
+	@Test
+	public void test6() throws JsonParseException {
+		String json = " [null, true, false, 100 ,-100,  " +
+				"{\"key01\": 9999.99}, [ [null],[true,false], [111111111111111111.1111111111111111111111] ,[\"a\",\"b\"]] ] ";
+		System.out.println(json);
+
+		JValue value = JsonParser.parse(json);
+		assertTrue(value.is(JValueType.JArray));
+		JArray jArray = TypeUtil.down(value);
+
+		assertEquals(jArray.get(0) ,JNull.get());
+		assertEquals(((JBool)jArray.get(1)).getValue() ,true);
+		assertEquals(((JBool)jArray.get(2)).getValue() ,false);
+		assertEquals(((JNumber)jArray.get(3)).intValue(),100);
+		assertEquals(((JNumber)jArray.get(4)).intValue() ,-100);
+
+ 		JObject o = TypeUtil.down(jArray.get(5));
+		JNumber n = TypeUtil.down(o.get("key01"));
+		assertEquals(n.doubleValue() ,9999.99,0.00);
+
+		JArray jArray1  = TypeUtil.down(jArray.get(6));
+		JArray jArray10  = TypeUtil.down(jArray1.get(0));
+		assertEquals(jArray10.get(0) ,JNull.get());
+
+		JArray jArray11  = TypeUtil.down(jArray1.get(1));
+		assertEquals(((JBool)jArray11.get(0)).getValue() ,true);
+		assertEquals(((JBool)jArray11.get(1)).getValue() ,false);
+
+		JArray jArray12  = TypeUtil.down(jArray1.get(2));
+		assertEquals(((JNumber)jArray12.get(0)).doubleValue() ,111111111111111111.1111111111111111111111, 0.00);
+
+		JArray jArray13  = TypeUtil.down(jArray1.get(3));
+		assertEquals(((JString)jArray13.get(0)).getValue() ,"a");
+		assertEquals(((JString)jArray13.get(1)).getValue() ,"b");
+	}
 }
