@@ -63,7 +63,7 @@ public abstract class JsonParser {
     while (lexer.hasNext()){
 
       Token token = lexer.nextToken();
-      JValue value = null;
+      JValue value ;
       switch (token.getType()){
         case RIGHT_SQUARE:
           return jArray;
@@ -92,6 +92,8 @@ public abstract class JsonParser {
           value = parseString(TypeUtil.down(token));
           break;
 
+        default:
+          value = null;
       }
 
       if(jArray.isEmpty()){
